@@ -1,13 +1,26 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
+	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
 	"io"
 	"log"
 	"net/http"
+	"os"
 )
 
 func main() {
+	// Load the .env file
+	godotenv.Load("./.env")
+	dbURL := os.Getenv("DB_URL")
+	db, err := sql.Open("postgres", dbURL)
+	if err != nil {
+		log.Fatalf("error opening database: %w\n", err)
+	}
+	defer db.Close()
+
 	mux := http.NewServeMux()
 	apiCfg := apiConfig{}
 	server := &http.Server{

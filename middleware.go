@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/ricardosilva86/chirpy-server/internal/database"
 	"io"
 	"net/http"
 	"sync/atomic"
@@ -9,6 +10,7 @@ import (
 
 type apiConfig struct {
 	fileserverHits atomic.Int32
+	dbQueries      *database.Queries
 }
 
 func (cfg *apiConfig) middlewareMetricsInc(next http.Handler) http.Handler {
